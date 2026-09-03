@@ -1,0 +1,6 @@
+{
+  "name": "Dollar Delight LTD",
+  "description": "Discover Dollar Delight LTD, Wetaskiwin's first craft, gift & hobby dollar store. Find yarn, DIY kits, stationery, gifts, seasonal decor, and more at prices that make you smile.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
