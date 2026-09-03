@@ -1,9 +1,26 @@
-import React from 'react';
-import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ArrowRight, Sparkles, CheckCircle2, Volume2, VolumeX } from 'lucide-react';
 import { BUSINESS_INFO } from '../data';
-import heroBgImage from '../assets/images/hero_craft_store_1788455968203.jpg';
+
+const HERO_VIDEO_URL = 'https://rurjyvb6c7idclyc.public.blob.vercel-storage.com/Create_video_for_dollar_store_202609032259.mp4';
 
 export const Hero: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
+
+  const toggleAudio = () => {
+    if (videoRef.current) {
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
+      if (!nextMuted) {
+        videoRef.current.play().catch(() => {});
+      }
+    } else {
+      setIsMuted((prev) => !prev);
+    }
+  };
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -16,17 +33,43 @@ export const Hero: React.FC = () => {
       id="home"
       className="relative overflow-hidden border-b border-[#F2EFE9] pt-14 pb-18 lg:pt-24 lg:pb-28"
     >
-      {/* Background Image with Warm Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={heroBgImage}
-          alt="Dollar Delight craft store background"
-          referrerPolicy="no-referrer"
+      {/* Background Video with Warm Overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          src={HERO_VIDEO_URL}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
           className="w-full h-full object-cover object-center"
         />
-        {/* Warm organic gradient overlay to ensure perfect readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF9EA]/88 via-[#FDFBF7]/92 to-white" />
-        <div className="absolute inset-0 bg-[#FDFBF7]/20 backdrop-blur-[2px]" />
+        {/* Warm organic gradient overlay adjusted to make video 25% more visible */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF9EA]/60 via-[#FDFBF7]/65 to-white/75" />
+      </div>
+
+      {/* Hero Video Audio Toggle Button */}
+      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-20">
+        <button
+          id="hero-audio-toggle-btn"
+          type="button"
+          onClick={toggleAudio}
+          className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#1A1A1A]/85 hover:bg-[#1A1A1A] text-white border border-white/20 backdrop-blur-md shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer text-xs font-semibold"
+          aria-label={isMuted ? 'Unmute hero video audio' : 'Mute hero video audio'}
+          title={isMuted ? 'Unmute video sound' : 'Mute video sound'}
+        >
+          {isMuted ? (
+            <>
+              <VolumeX className="w-4 h-4 text-[#FBBF24] transition-transform group-hover:scale-110" />
+              <span className="text-gray-200">Sound Off</span>
+            </>
+          ) : (
+            <>
+              <Volume2 className="w-4 h-4 text-[#2DD4BF] animate-pulse transition-transform group-hover:scale-110" />
+              <span className="text-gray-200">Sound On</span>
+            </>
+          )}
+        </button>
       </div>
 
       {/* Subtle decorative background shapes */}
